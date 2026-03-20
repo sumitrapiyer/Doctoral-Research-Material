@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Complete Guide to Research Hypotheses</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Source+Sans+Pro:wght@300;400;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a2e;
+    --paper: #faf8f4;
+    --accent: #c0392b;
+    --accent2: #2c3e50;
+    --gold: #d4a03c;
+    --sage: #5b7a5e;
+    --muted: #7a7a8a;
+    --light-border: #e0ddd5;
+    --card-bg: #ffffff;
+    --highlight-bg: #fef9e7;
+    --error-bg: #fdedec;
+    --success-bg: #eafaf1;
+    --blue-bg: #eaf2f8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans Pro', Georgia, serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.75;
+    font-size: 17px;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 80px 40px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 600px;
+    height: 600px;
+    border: 1px solid rgba(212,160,60,0.15);
+    border-radius: 50%;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -40%;
+    left: -10%;
+    width: 400px;
+    height: 400px;
+    border: 1px solid rgba(192,57,43,0.12);
+    border-radius: 50%;
+  }
+  .hero-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+  .hero-label {
+    font-family: 'Fira Code', monospace;
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    font-weight: 900;
+    line-height: 1.15;
+    margin-bottom: 20px;
+  }
+  .hero h1 em {
+    color: var(--gold);
+    font-style: italic;
+  }
+  .hero p {
+    font-size: 1.15rem;
+    color: #b0afc0;
+    max-width: 600px;
+    font-weight: 300;
+  }
+
+  /* ── TABLE OF CONTENTS ── */
+  .toc {
+    max-width: 900px;
+    margin: -30px auto 0;
+    padding: 0 40px;
+    position: relative;
+    z-index: 2;
+  }
+  .toc-card {
+    background: var(--card-bg);
+    border: 1px solid var(--light-border);
+    border-radius: 8px;
+    padding: 30px 35px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+  }
+  .toc-title {
+    font-family: 'Fira Code', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 15px;
+  }
+  .toc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 8px;
+  }
+  .toc-grid a {
+    color: var(--accent2);
+    text-decoration: none;
+    font-size: 0.95rem;
+    padding: 6px 0;
+    border-bottom: 1px solid transparent;
+    transition: all 0.2s;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+  .toc-grid a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+  .toc-grid a .num {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.75rem;
+    color: var(--gold);
+    min-width: 22px;
+  }
+
+  /* ── MAIN CONTENT ── */
+  .content {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 50px 40px 80px;
+  }
+
+  /* Section Styling */
+  .section {
+    margin-bottom: 65px;
+    scroll-margin-top: 30px;
+  }
+  .section-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem;
+    font-weight: 900;
+    color: rgba(212,160,60,0.15);
+    line-height: 1;
+    margin-bottom: -15px;
+  }
+  .section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.85rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 18px;
+    line-height: 1.3;
+  }
+  .section h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--accent2);
+    margin: 30px 0 12px;
+  }
+  .section p { margin-bottom: 14px; }
+
+  /* Callout Boxes */
+  .callout {
+    border-left: 4px solid var(--gold);
+    background: var(--highlight-bg);
+    padding: 20px 24px;
+    margin: 22px 0;
+    border-radius: 0 6px 6px 0;
+  }
+  .callout.error {
+    border-left-color: var(--accent);
+    background: var(--error-bg);
+  }
+  .callout.success {
+    border-left-color: var(--sage);
+    background: var(--success-bg);
+  }
+  .callout.info {
+    border-left-color: #2980b9;
+    background: var(--blue-bg);
+  }
+  .callout-label {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+  .callout.error .callout-label { color: var(--accent); }
+  .callout.success .callout-label { color: var(--sage); }
+  .callout.info .callout-label { color: #2980b9; }
+  .callout .callout-label { color: var(--gold); }
+
+  /* Example Cards */
+  .example-card {
+    background: var(--card-bg);
+    border: 1px solid var(--light-border);
+    border-radius: 8px;
+    padding: 22px 26px;
+    margin: 18px 0;
+    position: relative;
+  }
+  .example-card::before {
+    content: attr(data-tag);
+    position: absolute;
+    top: -10px;
+    left: 20px;
+    background: var(--accent2);
+    color: white;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 2px 10px;
+    border-radius: 3px;
+  }
+  .example-card.good::before { background: var(--sage); }
+  .example-card.bad::before { background: var(--accent); }
+
+  .hypothesis-box {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.92rem;
+    background: #f4f3ef;
+    padding: 14px 18px;
+    border-radius: 5px;
+    margin: 10px 0;
+    line-height: 1.6;
+    border-left: 3px solid var(--accent2);
+  }
+  .hypothesis-box.bad-h {
+    border-left-color: var(--accent);
+    text-decoration: line-through;
+    opacity: 0.75;
+  }
+  .hypothesis-box.good-h {
+    border-left-color: var(--sage);
+  }
+
+  /* Comparison Table */
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 0.95rem;
+  }
+  .compare-table th {
+    background: var(--accent2);
+    color: white;
+    padding: 12px 16px;
+    text-align: left;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: 600;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+  }
+  .compare-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--light-border);
+    vertical-align: top;
+  }
+  .compare-table tr:nth-child(even) td { background: #fafaf8; }
+  .compare-table tr:hover td { background: var(--highlight-bg); }
+
+  /* Flow Diagram */
+  .flow-diagram {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0;
+    margin: 30px 0;
+  }
+  .flow-step {
+    background: var(--accent2);
+    color: white;
+    padding: 14px 22px;
+    border-radius: 6px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    text-align: center;
+    min-width: 140px;
+  }
+  .flow-arrow {
+    font-size: 1.4rem;
+    color: var(--gold);
+    padding: 0 6px;
+  }
+
+  /* Variable Cards */
+  .var-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin: 20px 0;
+  }
+  .var-card {
+    padding: 22px;
+    border-radius: 8px;
+    border: 1px solid var(--light-border);
+  }
+  .var-card.iv {
+    background: linear-gradient(135deg, #eaf2f8, #d4e6f1);
+    border-color: #aed6f1;
+  }
+  .var-card.dv {
+    background: linear-gradient(135deg, #fef9e7, #fdebd0);
+    border-color: #f9e79f;
+  }
+  .var-card h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    margin-bottom: 8px;
+  }
+  .var-card.iv h4 { color: #2471a3; }
+  .var-card.dv h4 { color: #b7950b; }
+
+  /* Tag Badges */
+  .tag {
+    display: inline-block;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.7rem;
+    padding: 2px 8px;
+    border-radius: 3px;
+    margin: 2px 3px;
+    letter-spacing: 0.5px;
+  }
+  .tag.iv { background: #d4e6f1; color: #1a5276; }
+  .tag.dv { background: #fdebd0; color: #7e5109; }
+  .tag.mv { background: #e8daef; color: #6c3483; }
+  .tag.latent { background: #fadbd8; color: #922b21; }
+
+  /* Checklist */
+  .checklist {
+    list-style: none;
+    margin: 15px 0;
+  }
+  .checklist li {
+    padding: 8px 0 8px 32px;
+    position: relative;
+    border-bottom: 1px dashed var(--light-border);
+  }
+  .checklist li::before {
+    content: '✓';
+    position: absolute;
+    left: 4px;
+    color: var(--sage);
+    font-weight: 700;
+    font-size: 1.1rem;
+  }
+
+  /* Separator */
+  .sep {
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--light-border), transparent);
+    margin: 50px 0;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 40px;
+    color: var(--muted);
+    font-size: 0.85rem;
+    border-top: 1px solid var(--light-border);
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  /* Responsive */
+  @media (max-width: 700px) {
+    .hero { padding: 50px 20px 40px; }
+    .toc, .content { padding-left: 20px; padding-right: 20px; }
+    .var-grid { grid-template-columns: 1fr; }
+    .flow-diagram { flex-direction: column; }
+    .flow-arrow { transform: rotate(90deg); }
+    .compare-table { font-size: 0.82rem; }
+    .compare-table th, .compare-table td { padding: 8px 10px; }
+  }
+
+  code {
+    font-family: 'Fira Code', monospace;
+    background: #f0efe9;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-size: 0.88em;
+  }
+
+  strong { font-weight: 700; }
+
+  .inline-note {
+    font-size: 0.88rem;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  .decision-tree {
+    background: var(--card-bg);
+    border: 1px solid var(--light-border);
+    border-radius: 8px;
+    padding: 28px;
+    margin: 24px 0;
+    font-size: 0.95rem;
+  }
+  .decision-tree .dt-q {
+    font-weight: 700;
+    color: var(--accent2);
+    margin-bottom: 6px;
+  }
+  .decision-tree .dt-branch {
+    padding-left: 24px;
+    border-left: 2px solid var(--gold);
+    margin: 8px 0 8px 10px;
+  }
+  .decision-tree .dt-yes { color: var(--sage); font-weight: 600; }
+  .decision-tree .dt-no { color: var(--accent); font-weight: 600; }
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════ HERO ════════════════════════ -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-label">Research Methodology Guide</div>
+    <h1>The Art &amp; Science of Writing a <em>Good Hypothesis</em></h1>
+    <p>A comprehensive guide covering hypothesis types, formulation, common mistakes, variable selection, testability, and latent constructs — with examples at every step.</p>
+  </div>
+</header>
+
+<!-- ════════════════════════ TOC ════════════════════════ -->
+<nav class="toc">
+  <div class="toc-card">
+    <div class="toc-title">Table of Contents</div>
+    <div class="toc-grid">
+      <a href="#s1"><span class="num">01</span> What Is a Hypothesis?</a>
+      <a href="#s2"><span class="num">02</span> Types: Hypothesis vs Proposition vs Guiding</a>
+      <a href="#s3"><span class="num">03</span> How to Select the Right Type</a>
+      <a href="#s4"><span class="num">04</span> Declarative vs If-Then Format</a>
+      <a href="#s5"><span class="num">05</span> "And/Or" Hypotheses</a>
+      <a href="#s6"><span class="num">06</span> Common Mistakes &amp; Pitfalls</a>
+      <a href="#s7"><span class="num">07</span> Non-Measurable Hypotheses</a>
+      <a href="#s8"><span class="num">08</span> Testing Propositions</a>
+      <a href="#s9"><span class="num">09</span> Latent Variables Explained</a>
+      <a href="#s10"><span class="num">10</span> IV &amp; DV Selection</a>
+      <a href="#s11"><span class="num">11</span> Master Checklist</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ════════════════════════ CONTENT ════════════════════════ -->
+<main class="content">
+
+  <!-- ── SECTION 1 ── -->
+  <section class="section" id="s1">
+    <div class="section-number">01</div>
+    <h2>What Is a Hypothesis?</h2>
+    <p>A <strong>hypothesis</strong> is a tentative, testable statement that predicts the relationship between two or more variables. It translates your research question into a specific, falsifiable prediction that can be evaluated through data collection and analysis.</p>
+
+    <div class="callout">
+      <div class="callout-label">Key Principle</div>
+      A good hypothesis is <strong>specific</strong>, <strong>testable</strong>, <strong>falsifiable</strong>, and grounded in existing <strong>theory or observation</strong>. If you cannot imagine data that would disprove your statement, it is not a hypothesis.
+    </div>
+
+    <h3>The Five Pillars of a Strong Hypothesis</h3>
+    <table class="compare-table">
+      <tr><th>Pillar</th><th>What It Means</th><th>Test Yourself</th></tr>
+      <tr><td><strong>Specific</strong></td><td>Names exact variables &amp; population</td><td>Could two readers interpret this the same way?</td></tr>
+      <tr><td><strong>Testable</strong></td><td>Can be evaluated with available methods</td><td>Do instruments exist to measure both variables?</td></tr>
+      <tr><td><strong>Falsifiable</strong></td><td>It is possible to find evidence against it</td><td>What result would prove me wrong?</td></tr>
+      <tr><td><strong>Grounded</strong></td><td>Rooted in literature, theory, or observation</td><td>Can I cite prior work supporting this?</td></tr>
+      <tr><td><strong>Parsimonious</strong></td><td>As simple as the phenomenon allows</td><td>Am I testing one relationship, not five?</td></tr>
+    </table>
+  </section>
+
+  <div class="sep"></div>
+
+  <!-- ── SECTION 2 ── -->
+  <section class="section" id="s2">
+    <div class="section-number">02</div>
+    <h2>Types: Hypothesis vs Proposition vs Guiding Hypothesis</h2>
+
+    <table class="compare-table">
+      <tr>
+        <th style="width:22%">Type</th>
+        <th style="width:32%">Definition</th>
+        <th>When to Use</th>
+        <th style="width:20%">Testability</th>
+      </tr>
+      <tr>
+        <td><strong>Hypothesis</strong></td>
+        <td>A testable, falsifiable prediction about the relationship between <em>measurable</em> (observable) variables.</td>
+        <td>Quantitative research, experiments, surveys with established scales.</td>
+        <td>Directly testable via statistics (t-test, regression, ANOVA, etc.)</td>
+      </tr>
+      <tr>
+        <td><strong>Proposition</strong></td>
+        <td>A statement about the relationship between <em>constructs</em> (abstract, theoretical concepts) — often untestable until operationalised.</td>
+        <td>Theory-building research, conceptual frameworks, when variables are latent.</td>
+        <td>Tested indirectly — must be broken into measurable hypotheses first.</td>
+      </tr>
+      <tr>
+        <td><strong>Guiding Hypothesis</strong></td>
+        <td>A broad, directional assumption that orients an exploratory study without making a strict prediction.</td>
+        <td>Qualitative research, grounded-theory studies, early-stage exploratory work.</td>
+        <td>Not statistically tested — assessed through thematic analysis, pattern-matching, etc.</td>
+      </tr>
+    </table>
+
+    <div class="example-card" data-tag="Example Comparison">
+      <p><strong>Research Topic:</strong> Impact of leadership style on employee engagement</p>
+      <div class="hypothesis-box">
+        <strong>Proposition:</strong> "Transformational leadership enhances organisational commitment."<br>
+        <span class="inline-note">↑ Both concepts are abstract constructs — not directly measurable yet.</span>
+      </div>
+      <div class="hypothesis-box">
+        <strong>Hypothesis:</strong> "Employees who score their managers ≥ 4.0 on the MLQ-5X transformational leadership scale will report significantly higher scores on the OCQ affective commitment subscale than employees whose managers score &lt; 3.0."<br>
+        <span class="inline-note">↑ Variables are operationalised with specific instruments and cut-offs.</span>
+      </div>
+      <div class="hypothesis-box">
+        <strong>Guiding Hypothesis:</strong> "Leadership practices in the organisation may be shaping how employees relate to their work."<br>
+        <span class="inline-note">↑ Broad orientation for an interview-based qualitative study.</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="sep"></div>
+
+  <!-- ── SECTION 3 ── -->
+  <section class="section" id="s3">
+    <div class="section-number">03</div>
+    <h2>How to Select the Right Type</h2>
+
+    <div class="decision-tree">
+      <div class="dt-q">Q1: Is your study exploratory with no established theory?</div>
+      <div class="dt-branch">
+        <span class="dt-yes">YES →</span> Use a <strong>Guiding Hypothesis</strong> (qualitative/exploratory)
+      </div>
+      <div class="dt-branch">
+        <span class="dt-no">NO →</span> Continue to Q2
+      </div>
+
+      <div class="dt-q" style="margin-top:18px;">Q2: Are your variables abstract constructs (not directly observable)?</div>
+      <div class="dt-branch">
+        <span class="dt-yes">YES →</span> Start with a <strong>Proposition</strong>, then operationalise into hypotheses
+      </div>
+      <div class="dt-branch">
+        <span class="dt-no">NO →</span> Continue to Q3
+      </div>
+
+      <div class="dt-q" style="margin-top:18px;">Q3: Can you measure both variables with validated instruments?</div>
+      <div class="dt-branch">
+        <span class="dt-yes">YES →</span> Write a formal <strong>Hypothesis</strong> (directional or non-directional)
+      </div>
+      <div class="dt-branch">
+        <span class="dt-no">NO →</span> Go back — operationalise your constructs first, or choose a Guiding Hypothesis
+      </div>
+    </div>
+
+    <div class="flow-diagram">
+      <div class="flow-step">Literature<br>Review</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">Identify<br>Constructs</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">Write<br>Proposition</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">Operationalise<br>Variables</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">Formulate<br>Hypothesis</div>
+    </div>
+  </section>
+
+  <div class="sep"></div>
+
+  <!-- ── SECTION 4 ── -->
+  <section class="section" id="s4">
+    <div class="section-number">04</div>
+    <h2>Declarative vs If-Then Hypothesis Format</h2>
+
+    <h3>Declarative (Statement) Form</h3>
+    <p>Directly states the expected relationship. Preferred in most social science, management, and health research journals.</p>
+
+    <div class="example-card good" data-tag="Good — Declarative">
+      <div class="hypothesis-box good-h">
+        H1: "There is a significant positive relationship between employee training hours and job performance ratings."
+      </div>
+      <p><span class="tag iv">IV: Training hours</span> <span class="tag dv">DV: Job performance ratings</span></p>
+      <p><strong>Test:</strong> Pearson correlation or simple linear regression. Significance at p &lt; 0.05 supports H1.</p>
+    </div>
+
+    <div class="example-card good" data-tag="Good — Declarative, Directional">
+      <div class="hypothesis-box good-h">
+        H2: "Students who use spaced repetition will score higher on the final exam than students who use massed practice."
+      </div>
+      <p><span class="tag iv">IV: Study method (spaced vs massed)</span> <span class="tag dv">DV: Final exam score</span></p>
+      <p><strong>Test:</strong> Independent samples t-test comparing mean exam scores between groups.</p>
+    </div>
+
+    <h3>If-Then (Conditional) Form</h3>
+    <p>Structures the hypothesis as a conditional prediction. Common in experimental and natural science research.</p>
+
+    <div class="example-card good" data-tag="Good — If-Then">
+      <div class="hypothesis-box good-h">
+        H3: "If classroom temperature increases above 28°C, then students' sustained attention scores will decrease."
+      </div>
+      <p><span class="tag iv">IV: Classroom temperature</span> <span class="tag dv">DV: Sustained attention score</span></p>
+      <p><strong>Test:</strong> Manipulate temperature across conditions; compare attention scores via repeated-measures ANOVA.</p>
+    </div>
+
+    <div class="example-card good" data-tag="Good — If-Then with Moderator">
+      <div class="hypothesis-box good-h">
+        H4: "If a customer receives a personalised email, then purchase likelihood will increase, and this effect will be stronger for returning customers than new customers."
+      </div>
+      <p><span class="tag iv">IV: Email type</span> <span class="tag dv">DV: Purchase likelihood</span> <span class="tag mv">Moderator: Customer type</span></p>
+      <p><strong>Test:</strong> 2×2 factorial ANOVA (email type × customer type), examining the interaction effect.</p>
+    </div>
+
+    <h3>When to Use Each?</h3>
+    <table class="compare-table">
+      <tr><th>Criterion</th><th>Declarative</th><th>If-Then</th></tr>
+      <tr><td>Research paradigm</td><td>Surveys, correlational, SEM</td><td>Experiments, quasi-experiments</td></tr>
+      <tr><td>Cause implied?</td><td>Not necessarily</td><td>Yes — "If X, then Y" implies causation</td></tr>
+      <tr><td>Journal norms</td><td>Social sciences, business</td><td>Natural sciences, psychology labs</td></tr>
+      <tr><td>Complexity</td><td>Easy to add mediators/moderators</td><td>Can become unwieldy with many conditions</td></tr>
+    </table>
+  </section>
+
+  <div class="sep"></div>
+
+  <!-- ── SECTION 5 ── -->
+  <section class="section" id="s5">
+    <div class="section-number">05</div>
+    <h2>And / Or Hypotheses</h2>
+
+    <p>Compound hypotheses use <strong>"and"</strong> or <strong>"or"</strong> to combine multiple predictions into a single statement. This is <em>usually a bad idea</em> because it creates ambiguity about what exactly is being tested and makes falsification messy.</p>
+
+    <h3>The "And" Hypothesis Problem</h3>
+    <div class="example-card bad" data-tag="Problematic — And Hypothesis">
+      <div class="hypothesis-box bad-h">
+        H: "Social media usage increases anxiety AND decreases academic performance."
+      </div>
+      <p><strong>Why it fails:</strong> This is actually <em>two</em> hypotheses bundled into one. What if social media usage increases anxiety but has no effect on academic performance? The hypothesis is partially supported — which makes your results section confusing and your statistical testing ambiguous.</p>
+    </div>
+
+    <div class="example-card good" data-tag="Fix — Split into Two">
+      <div class="hypothesis-box good-h">H1a: "Social media usage is positively associated with anxiety levels."</div>
+      <div class="hypothesis-box good-h">H1b: "Social media usage is negatively associated with academic performance."</div>
+      <p>Now each can be tested, reported, and supported or rejected independently.</p>
+    </div>
+
+    <h3>The "Or" Hypothesis Problem</h3>
+    <div class="example-card bad" data-tag="Problematic — Or Hypothesis">
+      <div class="hypothesis-box bad-h">
+        H: "Remote work increases productivity OR job satisfaction."
+      </div>
+      <p><strong>Why it fails:</strong> An "or" hypothesis is almost impossible to falsify — it is supported if <em>either</em> outcome occurs. This means there is practically no result that would count as evidence against it.</p>
+    </div>
+
+    <div class="example-card good" data-tag="Fix — Separate Hypotheses">
+      <div class="hypothesis-box good-h">H2a: "Remote work is positively associated with employee productivity."</div>
+      <div class="hypothesis-box good-h">H2b: "Remote work is positively associated with job satisfaction."</div>
+    </div>
+
+    <div class="callout">
+      <div class="callout-label">Rule of Thumb</div>
+      <strong>One hypothesis = one relationship.</strong> If you see "and" or "or" in your hypothesis, you almost certainly need to split it.
+    </div>
+  </section>
+
+  <div class="sep"></div>
+
+  <!-- ── SECTION 6 ── -->
+  <section class="section" id="s6">
+    <div class="section-number">06</div>
+    <h2>Common Hypothesis Mistakes &amp; Pitfalls</h2>
+
+    <table class="compare-table">
+      <tr>
+        <th style="width:28%">Mistake</th>
+        <th>Bad Example</th>
+        <th>Why It's Wrong</th>
+        <th>Fixed Version</th>
+      </tr>
+      <tr>
+        <td><strong>Too vague</strong></td>
+        <td><em>"Technology affects learning."</em></td>
+        <td>Which technology? Which aspect of learning? Affects how?</td>
+        <td>"Tablet-based instruction improves Grade 5 students' reading comprehension scores."</td>
+      </tr>
+      <tr>
+        <td><strong>Not falsifiable</strong></td>
+        <td><em>"Communication is important in relationships."</em></td>
+        <td>No possible evidence could disprove this truism.</td>
+        <td>"Couples who engage in ≥ 30 min of daily quality conversation report higher relationship satisfaction on the RAS."</td>
+      </tr>
+      <tr>
+        <td><strong>No direction</strong><br><span class="inline-note">(when one is needed)</span></td>
+        <td><em>"There is a relationship between diet and mood."</em></td>
+        <td>Doesn't predict what kind of relationship — positive? Negative?</td>
+        <td>"A Mediterranean diet is positively associated with self-reported mood scores."</td>
+      </tr>
+      <tr>
+        <td><strong>Compound / "and-or"</strong></td>
+        <td><em>"Exercise reduces stress and improves sleep."</em></td>
+        <td>Two claims in one — partial support is ambiguous.</td>
+        <td>Split into H1a (stress) and H1b (sleep).</td>
+      </tr>
+      <tr>
+        <td><strong>Confuses IV and DV</strong></td>
+        <td><em>"Higher grades cause students to study more."</em></td>
+        <td>Reverse causation — grades are typically the outcome.</td>
+        <td>"Increased study hours lead to higher exam grades."</td>
+      </tr>
+      <tr>
+        <td><strong>Value-laden</strong></td>
+        <td><em>"Organic food is better than processed food."</em></td>
+        <td>"Better" is subjective and not measurable.</td>
+        <td>"Consumers of organic diets exhibit lower BMI than consumers of processed-food-dominant diets."</td>
+      </tr>
+      <tr>
+        <td><strong>Tautological</strong></td>
+        <td><em>"Happy people experience more happiness."</em></td>
+        <td>The prediction is the definition — circular reasoning.</td>
+        <td>"Employees with high gratitude scores report greater life satisfaction."</td>
+      </tr>
+    </table>
+  </section>
+
+  <div class="sep"></div>
+
+  <!-- ── SECTION 7 ── -->
+  <section class="section" id="s7">
+    <div class="section-number">07</div>
+    <h2>Non-Measurable Hypotheses &amp; How to Fix Them</h2>
+    <p>A hypothesis is <strong>non-measurable</strong> when one or more of its variables cannot be quantified, observed, or captured with any known instrument. This is the single most common reason committee members reject hypotheses.</p>
+
+    <div class="example-card bad" data-tag="Non-Measurable">
+      <div class="hypothesis-box bad-h">"Spiritual leadership improves the soul of the organisation."</div>
+      <p><strong>Problem:</strong> "Soul of the organisation" has no operational definition, no scale, and no agreed-upon measurement. No data could confirm or deny this.</p>
+    </div>
+
+    <div class="example-card good" data-tag="Made Measurable">
+      <div class="hypothesis-box good-h">"Spiritual leadership (measured via the Fry Spiritual Leadership Scale) is positively associated with organisational commitment (measured via the Allen-Meyer OCQ)."</div>
+      <p>Both variables now have validated instruments. The relationship can be tested with correlation or regression.</p>
+    </div>
+
+    <h3>Three-Step Fix for Non-Measurable Hypotheses</h3>
+    <div class="flow-diagram">
+      <div class="flow-step" style="background: var(--accent);">Identify the<br>vague construct</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step" style="background: var(--gold); color: var(--ink);">Find or create a<br>valid instrument</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step" style="background: var(--sage);">Rewrite with the<br>operational definition</div>
+    </div>
+
+    <div class="callout info">
+      <div class="callout-label">Tip</div>
+      When in doubt, ask: <em>"What number or category would I write down in my spreadsheet for this variable?"</em> If you can't answer, the variable is not yet measurable.
+    </div>
+  </section>
+
+  <div class="sep"></div>
+
+  <!-- ── SECTION 8 ── -->
+  <section class="section" id="s8">
+    <div class="section-number">08</div>
+    <h2>How to Test Propositions</h2>
+    <p>Because propositions deal with abstract <em>constructs</em>, they cannot be tested directly. Instead, you follow a four-stage process:</p>
+
+    <div class="flow-diagram">
+      <div class="flow-step">State the<br>Proposition</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">Operationalise<br>Constructs</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">Derive Testable<br>Hypotheses</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">Test &amp; Infer<br>Back</div>
+    </div>
+
+    <div class="example-card" data-tag="Worked Example">
+      <p><strong>Proposition:</strong> "Organisational justice influences employee voice behaviour."</p>
+      <p><strong>Step 1 — Operationalise:</strong></p>
+      <p style="padding-left:16px;">
+        Organisational Justice → Colquitt's (2001) Justice Scale (4 dimensions: distributive, procedural, interpersonal, informational)<br>
+        Employee Voice → Van Dyne & LePine's (1998) Voice Behaviour Scale (6 items)
+      </p>
+      <p><strong>Step 2 — Derive Hypotheses:</strong></p>
+      <div class="hypothesis-box good-h">H1: Procedural justice is positively related to voice behaviour.</div>
+      <div class="hypothesis-box good-h">H2: Distributive justice is positively related to voice behaviour.</div>
+      <div class="hypothesis-box good-h">H3: Interpersonal justice is positively related to voice behaviour.</div>
+      <div class="hypothesis-box good-h">H4: Informational justice is positively related to voice behaviour.</div>
+      <p><strong>Step 3 — Test:</strong> Hierarchical multiple regression or SEM (structural equation modelling). Each path coefficient tests one hypothesis.</p>
+      <p><strong>Step 4 — Infer Back:</strong> If H1, H2, H3, and H4 are supported, the original proposition receives empirical support. If only some are supported, the proposition is partially supported — and you refine the theory.</p>
+    </div>
+
+    <div class="callout success">
+      <div class="callout-label">Key Insight</div>
+      Propositions live at the <strong>theory level</strong>. Hypotheses live at the <strong>data level</strong>. Your research moves between these two levels constantly. SEM is especially powerful for this because it models latent constructs directly.
+    </div>
+  </section>
+
+  <div class="sep"></div>
+
+  <!-- ── SECTION 9 ── -->
+  <section class="section" id="s9">
+    <div class="section-number">09</div>
+    <h2>Latent Variables Explained</h2>
+    <p>A <strong>latent variable</strong> is a construct that cannot be directly observed or measured with a single question. It is inferred from multiple observed indicators (items on a questionnaire, behavioural measures, etc.).</p>
+
+    <div class="var-grid">
+      <div class="var-card iv">
+        <h4>Observable (Manifest) Variable</h4>
+        <p>Directly measurable: age, salary, temperature, test score, number of absences.</p>
+        <p><em>Appears as a <strong>rectangle</strong> in SEM path diagrams.</em></p>
+      </div>
+      <div class="var-card dv">
+        <h4>Latent (Unobserved) Variable</h4>
+        <p>Inferred from indicators: intelligence, motivation, job satisfaction, brand loyalty.</p>
+        <p><em>Appears as an <strong>ellipse / circle</strong> in SEM path diagrams.</em></p>
+      </div>
+    </div>
+
+    <h3>Why Latent Variables Matter for Hypotheses</h3>
+    <p>When your hypothesis includes a latent variable, you must explain <strong>how</strong> you will measure it. This means specifying the observed indicators that reflect the underlying construct. Without this, the hypothesis is non-testable.</p>
+
+    <div class="example-card" data-tag="Latent Variable Example">
+      <p><strong>Latent Construct:</strong> <span class="tag latent">Emotional Intelligence (EI)</span></p>
+      <p><strong>Observed Indicators (items):</strong> Self-awareness subscale score, self-regulation subscale score, empathy subscale score, social skills subscale score — all from the Wong & Law EI Scale (WLEIS).</p>
+      <div class="hypothesis-box good-h">
+        H: "Emotional intelligence (measured via WLEIS) positively predicts conflict resolution effectiveness (measured via the ROCI-II integrating style score) among middle managers."
+      </div>
+      <p><span class="tag latent">Latent IV: EI</span> <span class="tag dv">DV: Conflict resolution score</span></p>
+      <p><strong>Test:</strong> SEM with EI as a latent factor (4 indicators) predicting the observed DV, or CFA + path analysis.</p>
+    </div>
+
+    <div class="callout">
+      <div class="callout-label">Common Latent Variables in Research</div>
+      <p>Motivation, self-efficacy, organisational culture, brand equity, quality of life, customer satisfaction, perceived risk, trust, engagement, burnout, psychological capital — all of these require multi-item measurement and cannot be captured with a single question.</p>
+    </div>
+  </section>
+
+  <div class="sep"></div>
+
+  <!-- ── SECTION 10 ── -->
+  <section class="section" id="s10">
+    <div class="section-number">10</div>
+    <h2>Independent &amp; Dependent Variable Selection</h2>
+
+    <div class="var-grid">
+      <div class="var-card iv">
+        <h4>Independent Variable (IV)</h4>
+        <p>The presumed <strong>cause</strong> or <strong>predictor</strong>. It is what you manipulate (in experiments) or measure first (in surveys). It is the variable you believe influences the outcome.</p>
+        <p><strong>Ask:</strong> <em>"What am I changing or examining as the input?"</em></p>
+      </div>
+      <div class="var-card dv">
+        <h4>Dependent Variable (DV)</h4>
+        <p>The presumed <strong>effect</strong> or <strong>outcome</strong>. It is what you measure to see if the IV had an impact. It "depends on" the IV.</p>
+        <p><strong>Ask:</strong> <em>"What am I measuring as the result?"</em></p>
+      </div>
+    </div>
+
+    <h3>Step-by-Step Variable Selection Process</h3>
+
+    <table class="compare-table">
+      <tr><th>Step</th><th>Action</th><th>Example</th></tr>
+      <tr>
+        <td><strong>1. Start from theory</strong></td>
+        <td>Identify the causal model in your literature review. What does theory say causes what?</td>
+        <td>Self-Determination Theory says autonomy support → intrinsic motivation.</td>
+      </tr>
+      <tr>
+        <td><strong>2. Identify the direction</strong></td>
+        <td>Determine which variable logically comes first (temporally or causally).</td>
+        <td>Autonomy support (IV) happens first; motivation (DV) is the consequence.</td>
+      </tr>
+      <tr>
+        <td><strong>3. Operationalise</strong></td>
+        <td>Find validated instruments for each variable.</td>
+        <td>IV: Work Climate Questionnaire (WCQ). DV: Intrinsic Motivation Inventory (IMI).</td>
+      </tr>
+      <tr>
+        <td><strong>4. Check for confounders</strong></td>
+        <td>Identify control variables or mediators/moderators.</td>
+        <td>Control for: tenure, age, role level. Possible mediator: perceived competence.</td>
+      </tr>
+      <tr>
+        <td><strong>5. Write the hypothesis</strong></td>
+        <td>Combine IV, DV, direction, and any moderators/mediators into a clear statement.</td>
+        <td>"Manager autonomy support (WCQ) positively predicts intrinsic motivation (IMI), mediated by perceived competence."</td>
+      </tr>
+    </table>
+
+    <h3>Variable Roles Beyond IV &amp; DV</h3>
+    <table class="compare-table">
+      <tr><th>Role</th><th>Definition</th><th>Example</th></tr>
+      <tr>
+        <td><strong>Mediator</strong> <span class="tag mv">M</span></td>
+        <td>Explains <em>why</em> or <em>how</em> the IV affects the DV (the mechanism).</td>
+        <td>Training (IV) → Self-efficacy (M) → Performance (DV)</td>
+      </tr>
+      <tr>
+        <td><strong>Moderator</strong> <span class="tag mv">Mod</span></td>
+        <td>Changes the <em>strength or direction</em> of the IV → DV relationship.</td>
+        <td>Feedback (IV) → Performance (DV), moderated by personality type.</td>
+      </tr>
+      <tr>
+        <td><strong>Control Variable</strong></td>
+        <td>Held constant or statistically accounted for to rule out alternative explanations.</td>
+        <td>Age, gender, tenure, education level.</td>
+      </tr>
+    </table>
+
+    <div class="callout error">
+      <div class="callout-label">Common IV/DV Mistakes</div>
+      <strong>Reversing the direction:</strong> Writing "High grades lead to more studying" when the theory says studying → grades.<br>
+      <strong>Picking DVs you can't measure:</strong> "Happiness" without a scale. Use the Subjective Happiness Scale (SHS) or SWLS instead.<br>
+      <strong>Ignoring confounders:</strong> Not controlling for obvious third variables that could explain the relationship (e.g., income when studying education → health).
+    </div>
+  </section>
+
+  <div class="sep"></div>
+
+  <!-- ── SECTION 11 ── -->
+  <section class="section" id="s11">
+    <div class="section-number">11</div>
+    <h2>Master Checklist: Before You Finalise</h2>
+
+    <ul class="checklist">
+      <li>My hypothesis states a <strong>clear relationship</strong> between exactly two variables (or one IV and one DV with stated mediator/moderator).</li>
+      <li>Both variables are <strong>operationally defined</strong> with specific instruments or measures named.</li>
+      <li>The <strong>direction</strong> of the relationship is stated (positive, negative, greater than, etc.) — unless I have justified a non-directional hypothesis.</li>
+      <li>The hypothesis is <strong>falsifiable</strong> — I can describe what data would disprove it.</li>
+      <li>The hypothesis is <strong>grounded in theory</strong> — I can cite at least one source supporting the predicted relationship.</li>
+      <li>There is <strong>no "and" or "or"</strong> joining two separate predictions. Each hypothesis tests one relationship.</li>
+      <li>I have correctly identified which is the <strong>IV</strong> and which is the <strong>DV</strong> based on temporal/causal logic.</li>
+      <li>If my variables are <strong>latent constructs</strong>, I have specified the indicators and measurement model.</li>
+      <li>I have identified <strong>control variables</strong> to rule out alternative explanations.</li>
+      <li>I know which <strong>statistical test</strong> will be used to evaluate the hypothesis.</li>
+      <li>My hypothesis avoids <strong>value judgments</strong> ("better", "worse", "should") and uses measurable terms.</li>
+      <li>I have checked that my <strong>population/sample</strong> is stated or clearly implied.</li>
+    </ul>
+  </section>
+
+</main>
+
+<footer class="footer">
+  Research Methodology Reference Guide &nbsp;·&nbsp; Writing Testable Hypotheses &nbsp;·&nbsp; 2026
+</footer>
+
+</body>
+</html>
